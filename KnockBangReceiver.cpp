@@ -33,6 +33,7 @@
 
 ==============================================================================*/
 
+#include "TinyISP_BuildOptions.h"
 #include "KnockBangReceiver.h"
 
 #include <util/atomic.h>
@@ -44,7 +45,7 @@
 #endif
 
 
-#if KNOCKBANG_RECEIVER_AVAILABLE
+#if KNOCKBANG_RECEIVER_AVAILABLE && RELAY_KNOCK_BANG_ENABLED
 
 
 /*==============================================================================
