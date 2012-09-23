@@ -145,7 +145,7 @@
   Knock-Bang Relay and Serial Relay options.
 */
 
-#define RELAY_KNOCK_BANG_ENABLED          1
+#define RELAY_KNOCK_BANG_ENABLED          0
 
 /* 
   If this option is enabled for a board that has only one Hardware Serial port,
