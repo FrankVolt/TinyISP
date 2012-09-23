@@ -63,6 +63,7 @@ public:
   void end( void ) {}
   int available( void ) { return( 0 ); }
   int read( void ) { return( -1 ); }
+  void write( uint8_t ) { }
 };
 
 typedef EmptySerialRelayClass SerialRelayClass;

@@ -153,7 +153,7 @@
   is not enabled, "#include <SoftwareSerial.h>" cannot be present in the 
   sketch.
 */
-#define RELAY_SERIAL_ENABLED              1
+#define RELAY_SERIAL_ENABLED              0
 #define RELAY_BAUD_RATE                   9600
 
 

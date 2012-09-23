@@ -246,6 +246,10 @@ bool monitor_run( uint8_t& b )
           rv = true;
           b = ch;
           break;
+
+        default:
+          RelaySerial.write( ch );
+          break;
       }
     }
     
