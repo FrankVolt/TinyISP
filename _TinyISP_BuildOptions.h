@@ -36,10 +36,12 @@
 #ifndef _TinyISP_BuildOptions_h
 #define _TinyISP_BuildOptions_h
 
-#define PROGRAMMER_SPI_CLOCK  SLOW
+/*
+  Put build options here.
 
-#define RELAY_KNOCK_BANG_ENABLED  1
+  Available options can be found in TinyISP_SelectBuildOptions.h
 
-#define TICK_TOCK_ENABLED  1
+  DO NOT MODIFY TinyISP_SelectBuildOptions.h
+*/
 
 #endif
