@@ -36,7 +36,7 @@
 #ifndef TinyISP_RelayUart_h
 #define TinyISP_RelayUart_h
 
-#include "TinyISP_BuildOptions.h"
+#include "TinyISP_SelectBuildOptions.h"
 
 
 #if RELAY_UART_SERIAL_ENABLED

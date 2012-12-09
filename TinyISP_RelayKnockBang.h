@@ -36,7 +36,7 @@
 #ifndef TinyISP_RelayKnockBang_h
 #define TinyISP_RelayKnockBang_h
 
-#include "TinyISP_BuildOptions.h"
+#include "TinyISP_SelectBuildOptions.h"
 
 
 #if RELAY_KNOCK_BANG_ENABLED

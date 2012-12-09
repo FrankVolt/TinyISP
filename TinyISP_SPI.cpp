@@ -35,7 +35,7 @@
 
 ==============================================================================*/
 
-#include "TinyISP_BuildOptions.h"
+#include "TinyISP_SelectBuildOptions.h"
 
 #include "TinyISP_SPI.h"
 
@@ -123,7 +123,7 @@ static uint8_t spi_send( uint8_t b )
   return( reply );
 }
 
-#else
+#else // PROGRAMMER_SPI_CLOCK == SLOW
 
 static uint8_t spi_send( uint8_t b ) 
 {
@@ -144,18 +144,20 @@ static uint8_t spi_send( uint8_t b )
       digitalWrite( MOSI, LOW );
     }
 
-    // 2 cycles / 128000 cycles per second = 15.625 us
+    // Note: The ATtiny13A datasheet indicates the pulses must be > 2 CPU cycles making 3 CPU cycles the minimum
+    
+    // 3 cycles / 128000 cycles per second = 23.4375 us
     digitalWrite( SCK, HIGH );
-    delayMicroseconds( 16 );  // fix: Was 32.  Test the new value!
+    delayMicroseconds( 24 );
     
     if ( digitalRead( MISO ) )
     {
       rv = rv | 0x01;
     }
 
-    // 2 cycles / 128000 cycles per second = 15.625 us
+    // 3 cycles / 128000 cycles per second = 23.4375 us
     digitalWrite( SCK, LOW );
-    delayMicroseconds( 16 );  // fix: Was 32.  Test the new value!
+    delayMicroseconds( 24 );
 
     b = b << 1;
   }

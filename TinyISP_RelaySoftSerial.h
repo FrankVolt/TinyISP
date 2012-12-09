@@ -36,7 +36,7 @@
 #ifndef TinyISP_RelaySoftSerial_h
 #define TinyISP_RelaySoftSerial_h
 
-#include "TinyISP_BuildOptions.h"
+#include "TinyISP_SelectBuildOptions.h"
 
 
 #if RELAY_SOFT_SERIAL_ENABLED

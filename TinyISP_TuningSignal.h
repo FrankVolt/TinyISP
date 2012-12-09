@@ -36,7 +36,7 @@
 #ifndef TinyISP_TuningSignal_h
 #define TinyISP_TuningSignal_h
 
-#include "TinyISP_BuildOptions.h"
+#include "TinyISP_SelectBuildOptions.h"
 
 
 #if TUNING_SIGNAL_ENABLED

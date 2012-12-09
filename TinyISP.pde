@@ -43,6 +43,7 @@
 #include "TinyISP_SanityChecks.h"
 
 #include "TinyISP_AispLED.h"
+#include "TinyISP_InternalDebugging.h"
 #include "TinyISP_Monitor.h"
 #include "TinyISP_Programmer.h"
 
@@ -58,6 +59,10 @@ static const uint8_t Anchor = 13;
 
 void setup() 
 {
+  #if INTERNAL_DEBUGGING_TO_HARDWARESERIAL
+    InternalDebugging.begin( 115200 );
+  #endif
+
   Serial.begin( PROGRAMMER_BAUD_RATE );
   
   StatusIndicator.begin( LED_PIN );

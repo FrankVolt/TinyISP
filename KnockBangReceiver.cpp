@@ -33,7 +33,7 @@
 
 ==============================================================================*/
 
-#include "TinyISP_BuildOptions.h"
+#include "TinyISP_SelectBuildOptions.h"
 #include "KnockBangReceiver.h"
 
 #include <util/atomic.h>

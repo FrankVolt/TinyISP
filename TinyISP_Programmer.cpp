@@ -35,9 +35,10 @@
 
 ==============================================================================*/
 
-#include "TinyISP_BuildOptions.h"
+#include "TinyISP_SelectBuildOptions.h"
 
 #include "TinyISP_AispLED.h"
+#include "TinyISP_InternalDebugging.h"
 #include "TinyISP_Programmer.h"
 #include "TinyISP_SPI.h"
 #include "TinyISP_TuningSignal.h"
@@ -291,6 +292,35 @@ static void Handle_SET_DEVICE_EXT( void )
 
 /*----------------------------------------------------------------------------*/
 
+static void reset_toggle( void )
+{
+  noInterrupts();
+  digitalWrite( RESET, HIGH );
+
+//    delayMicroseconds (2);  // pulse for at least 2 clock cycles
+
+  #if (PROGRAMMER_SPI_CLOCK == SLOW)
+    // The pulse duration must be at least tRST (< 2500ns) plus two CPU clock cycles.
+    // 2.5 us + 2 cycles / 128000 cycles per second = 2.5 us + 15.625 us
+    delayMicroseconds( 3 + 16 );
+  #elif (PROGRAMMER_SPI_CLOCK == SAFE) || (PROGRAMMER_SPI_CLOCK == NORMAL)
+    // The pulse duration must be at least tRST (< 2500ns) plus two CPU clock cycles.
+    // 2.5 us + 2 cycles / 1000000 cycles per second = 2.5 us + 2 us
+    delayMicroseconds( 3 + 2 );
+  #elif (PROGRAMMER_SPI_CLOCK == FAST)
+    // The pulse duration must be at least tRST (< 2500ns) plus two CPU clock cycles.
+    // 2.5 us + 2 cycles / 16000000 cycles per second = 2.5 us + 0.125 us
+    delayMicroseconds( 3 );
+  #else
+    #error Unsupported SPI clock in reset_toggle; no way to determine the RESET pulse duration.
+  #endif
+
+  digitalWrite( RESET, LOW );
+  interrupts();
+}
+
+/*----------------------------------------------------------------------------*/
+
 static void reset_target( void )
 {
   if ( ! HeldInReset )
@@ -307,11 +337,7 @@ static void reset_target( void )
     digitalWrite( SCK, LOW );
 
     // Give RESET a quick toggle to ensure the target is in the desired state
-    noInterrupts();
-    digitalWrite( RESET, HIGH );
-    delayMicroseconds (2);  // pulse for at least 2 clock cycles
-    digitalWrite( RESET, LOW );
-    interrupts();
+    reset_toggle();
 
     HeldInReset = true;
   }
@@ -343,26 +369,16 @@ static bool release_target( void )
 
 static void programmer_activate( void ) 
 {
-/* rmv
-  // fix: Drive RESET LOW before mucking with SCK?
-  // http://code.google.com/p/mega-isp/issues/detail?id=22
+  uint32_t rv;
+  int8_t tries;
 
-  // following delays may not work on all targets...
-  pinMode( RESET, OUTPUT );
-  digitalWrite( RESET, HIGH );
-  pinMode( SCK, OUTPUT );
-  digitalWrite( SCK, LOW );
-  delay( 50 );
-  digitalWrite( RESET, LOW );
-  delay( 50 );
-*/
   reset_target();
 
   // For Master mode, enabling SPI should be done after RESET (SS) is turned into an output.  For this application, it is a difference without a distinction because RESET (SS) is held high by a pullup resistor.
   spi_begin();
 
   // rmv: ATmega328 datasheet calls for at least 20 ms.  50 ms is excessive.
-  // delay( 50 ); 
+  //delay( 50 ); 
   delay( 20 );
 
   // Prepare the data lines
@@ -370,9 +386,34 @@ static void programmer_activate( void )
   pinMode( MOSI, OUTPUT );
 
   // Send Programming Enable to the target
-  // fix: Check the value returned from the processor.  Ensure it entered programming mode.
-  spi_transaction( 0xAC, 0x53, 0x00, 0x00 );
-  // rmv? debug_programmer_1 = spi_transaction2( 0xAC530000 );
+
+  tries = 0;
+  do
+  {
+    rv = spi_transaction2( 0xAC530000 );
+
+    #if INTERNAL_DEBUGGING_TO_HARDWARESERIAL
+      InternalDebugging.print( F( "Programming Enable: " ) );
+      InternalDebugging.print( rv, HEX );
+      InternalDebugging.println();
+    #endif
+
+    if ( (rv & 0x0000FF00) == 0x00005300 )
+    {
+      break;
+    }
+    else
+    {
+      #if INTERNAL_DEBUGGING_TO_HARDWARESERIAL
+        InternalDebugging.println( F( "  Toggling RESET and trying again." ) );
+      #endif
+      reset_toggle();
+      delay( 20 );
+    }
+
+    ++tries;
+  }
+  while ( tries < 3 );
 
   programmer_active = true;
 }

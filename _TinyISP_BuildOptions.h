@@ -33,45 +33,13 @@
 
 ==============================================================================*/
 
-#ifndef TinyISP_SanityChecks_h
-#define TinyISP_SanityChecks_h
+#ifndef _TinyISP_BuildOptions_h
+#define _TinyISP_BuildOptions_h
 
-#include "TinyISP_SelectBuildOptions.h"
+#define PROGRAMMER_SPI_CLOCK  SLOW
 
+#define RELAY_KNOCK_BANG_ENABLED  1
 
-#if defined( __AVR_ATmega328X__ ) 
-
-  #if (RELAY_KNOCK_BANG_ENABLED) && (RELAY_SERIAL_ENABLED)
-    #error The Knock-Bang Relay and Serial Relay are mutually exclusive for this processor.  Enable one or the other but not both.  See the <_TinyISP_BuildOptions.h> file.
-  #endif
-
-  #if (RELAY_SERIAL_ENABLED)
-    #if (RELAY_SOFT_SERIAL_ENABLED)
-      #if ! defined( SoftwareSerial_h )
-        #error Ensure the "#include <SoftwareSerial.h>" line in the sketch is not commented-out or set RELAY_SERIAL_ENABLED to 0 in the <_TinyISP_BuildOptions.h> file.
-      #endif
-    #else
-#error
-    #endif
-  #else
-    #if defined( SoftwareSerial_h )
-      #error Comment-out the "#include <SoftwareSerial.h>" line in the sketch or set RELAY_SERIAL_ENABLED to 1 in the <_TinyISP_BuildOptions.h> file.
-    #endif
-  #endif
-
-/* rmv
-  #if (RELAY_KNOCK_BANG_ENABLED)
-    #if ! defined( KnockBangReceiver_h )
-      #error Ensure the "#include <KnockBangReceiver.h>" line in the sketch is not commented-out or set RELAY_KNOCK_BANG_ENABLED to 0 in the <_TinyISP_BuildOptions.h> file.
-    #endif
-  #else
-    #if defined( KnockBangReceiver_h )
-      #error Comment-out the "#include <KnockBangReceiver.h>" line in the sketch or set RELAY_KNOCK_BANG_ENABLED to 1 in the <_TinyISP_BuildOptions.h> file.
-    #endif
-  #endif
-*/
-
-#endif
-
+#define TICK_TOCK_ENABLED  1
 
 #endif

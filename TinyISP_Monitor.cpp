@@ -33,7 +33,7 @@
 
 ==============================================================================*/
 
-#include "TinyISP_BuildOptions.h"
+#include "TinyISP_SelectBuildOptions.h"
 
 #include "TinyISP_AispLED.h"
 #include "TinyISP_Monitor.h"

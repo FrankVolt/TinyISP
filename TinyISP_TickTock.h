@@ -36,7 +36,7 @@
 #ifndef TinyISP_TickTock_h
 #define TinyISP_TickTock_h
 
-#include "TinyISP_BuildOptions.h"
+#include "TinyISP_SelectBuildOptions.h"
 
 
 #if (TICK_TOCK_ENABLED)
