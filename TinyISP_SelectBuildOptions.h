@@ -172,7 +172,7 @@
 */
 
 #if ! defined( PROGRAMMER_SPI_CLOCK )
-#error
+
   #define PROGRAMMER_SPI_CLOCK  SAFE
 
 #endif

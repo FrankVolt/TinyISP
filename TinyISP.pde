@@ -39,7 +39,7 @@
 
 #include <avr/pgmspace.h>
 
-#include "TinyISP_BuildOptions.h"
+#include "TinyISP_SelectBuildOptions.h"
 #include "TinyISP_SanityChecks.h"
 
 #include "TinyISP_AispLED.h"
