@@ -50,7 +50,7 @@
   Take a guess at the board based on the processor.
 */
 
-#if defined( __AVR_ATmega328__ ) || defined( __AVR_ATmega328P__ )
+#if defined( __AVR_ATmega328__ ) || defined( __AVR_ATmega328P__ ) || defined( __AVR_ATmega168__ )
 
   #define BOARD_ARDUINO_UNO                 1
   #define __AVR_ATmega328X__                1
