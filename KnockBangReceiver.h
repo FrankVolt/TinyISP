@@ -43,7 +43,7 @@
 #define MISO_PASTE(lft,rgt)       lft ## rgt
 #define MISO_MAKE_REG(lft,rgt)    MISO_PASTE(lft,rgt)
 
-#if defined( __AVR_ATmega328P__ ) || defined( __AVR_ATmega328__ )
+#if defined( __AVR_ATmega328P__ ) || defined( __AVR_ATmega328__ ) || defined( __AVR_ATmega168__ )
 
   #define MISO_DDR    DDRB
   #define MISO_PORT   PORTB
